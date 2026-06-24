@@ -117,7 +117,7 @@
         function getDB() { 
             if(!localStorage.getItem('pcg_fuel_db')) {
                 localStorage.setItem('pcg_fuel_db', JSON.stringify([
-                    { id: 'mock-1', reqId: '#TI-2026-001', monthGroup: '2026-06', vesselVehicle: 'SJA-1234 (Vehicle)', fuelType: 'Gasoline', quantity: 80, cost: 5200.00, status: 'pending', date: '2026-06-20', description: 'Gasoline Request - SJA-1234' }
+                    { id: 'mock-1', reqId: '#2026-001', monthGroup: '2026-06', vesselVehicle: 'SJA-1234 (Vehicle)', fuelType: 'Gasoline', quantity: 80, cost: 5200.00, status: 'pending', date: '2026-06-20', description: 'Gasoline Request - SJA-1234' }
                 ]));
             }
             return JSON.parse(localStorage.getItem('pcg_fuel_db')); 
@@ -132,6 +132,7 @@
             renderAdminPanels();
         }
 
+        /* Pulls fresh copies generated or modified under user context seamlessly */
         function renderAdminPanels() {
             const selectedMonth = document.getElementById('globalMonthFilter').value;
             const selectOptions = document.getElementById('globalMonthFilter');
@@ -140,12 +141,11 @@
             const db = getDB();
             const monthRequests = db.filter(r => r.monthGroup === selectedMonth);
 
-            // Render Tab 1 Actions Table
             const approvalBody = document.getElementById('adminApprovalTable').getElementsByTagName('tbody')[0];
             approvalBody.innerHTML = '';
 
             if(monthRequests.length === 0) {
-                approvalBody.innerHTML = `<tr><td colspan="6" class="empty-row-msg">No submissions filed for this calendar block.</td></tr>`;
+                approvalBody.innerHTML = `<tr><td colspan="6" class="empty-row-msg">No submissions currently recorded for this month.</td></tr>`;
             } else {
                 monthRequests.forEach(req => {
                     const row = approvalBody.insertRow();
@@ -156,7 +156,6 @@
                 });
             }
 
-            // Render Tab 2 Allowance Status Summary
             const approvedItems = monthRequests.filter(r => r.status === 'approved');
             const totalUtilized = approvedItems.reduce((sum, i) => sum + i.cost, 0);
             const remainingBalance = BUDGET_LIMIT - totalUtilized;
@@ -186,13 +185,13 @@
             const monthApprovedTotal = db.filter(r => r.monthGroup === target.monthGroup && r.status === 'approved').reduce((sum, i) => sum + i.cost, 0);
 
             if((monthApprovedTotal + target.cost) > BUDGET_LIMIT) {
-                alert(`OVER BUDGET REJECTION:\nApproving this ₱${target.cost.toFixed(2)} item breaches the monthly ₱14,000 allowance pool ceiling.\nAvailable balance headroom remaining: ₱${(BUDGET_LIMIT - monthApprovedTotal).toFixed(2)}.`);
+                alert(`OVER BUDGET REJECTION:\nApproving this item costing ₱${target.cost.toFixed(2)} breaches the ₱14,000 ceiling limits.\nAvailable balance left: ₱${(BUDGET_LIMIT - monthApprovedTotal).toFixed(2)}.`);
                 return;
             }
 
             target.status = 'approved';
             saveDB(db);
-            alert(`SUCCESS:\nRequisition ${target.reqId} authorized and billed against the balance sheet.`);
+            alert(`SUCCESS:\nRequisition ${target.reqId} authorized.`);
             renderAdminPanels();
         }
 
