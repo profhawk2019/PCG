@@ -3,35 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PCG - User Fuel Portal</title>
+    <title>CGWCEIS Training Institute - User Fuel Portal</title>
     <style>
         :root {
             --primary-blue: #0A2540;
-            --secondary-blue: #1E3A8A;
-            --pcg-orange: #FF5500;
+            --ocean-blue: #0073CF;
             --light-bg: #F4F6F9;
             --white: #FFFFFF;
             --gray-text: #4A5568;
             --border-color: #E2E8F0;
+            --accent-gold: #D4AF37;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background-color: var(--light-bg); color: #333; padding: 20px; }
         .container { max-width: 1000px; margin: 0 auto; background: var(--white); padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .header { display: flex; align-items: center; border-bottom: 3px double var(--primary-blue); padding-bottom: 20px; margin-bottom: 20px; }
-        .header-logo-img { width: 95px; height: 95px; object-fit: contain; margin-right: 20px; }
-        .header-text h1 { font-size: 24px; color: var(--primary-blue); text-transform: uppercase; }
-        .header-text h2 { font-size: 16px; color: var(--pcg-orange); font-weight: 600; text-transform: uppercase; }
+        .header { display: flex; align-items: center; border-bottom: 3px double var(--ocean-blue); padding-bottom: 20px; margin-bottom: 20px; }
+        .header-logo-img { width: 105px; height: 105px; object-fit: contain; margin-right: 20px; }
+        .header-text h1 { font-size: 22px; color: var(--primary-blue); text-transform: uppercase; letter-spacing: 0.5px; }
+        .header-text h2 { font-size: 15px; color: var(--ocean-blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
         
         .controls-bar { background-color: #F8FAFC; border: 1px solid var(--border-color); padding: 15px; border-radius: 6px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .select-input { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-weight: 600; color: var(--primary-blue); }
+        .select-input { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-weight: 600; color: var(--primary-blue); background: var(--white); }
         
         .tabs-nav { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 25px; gap: 5px; }
         .tab-btn { background: #E2E8F0; color: var(--gray-text); border: none; padding: 12px 20px; font-size: 14px; font-weight: 600; cursor: pointer; border-top-left-radius: 6px; border-top-right-radius: 6px; flex: 1; }
-        .tab-btn.active { background: var(--primary-blue); color: var(--white); border-bottom: 3px solid var(--pcg-orange); }
+        .tab-btn.active { background: var(--ocean-blue); color: var(--white); border-bottom: 3px solid var(--accent-gold); }
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
         
-        .section-title { font-size: 16px; color: var(--primary-blue); border-left: 5px solid var(--pcg-orange); padding-left: 10px; margin-bottom: 20px; text-transform: uppercase; font-weight: bold; }
+        .section-title { font-size: 16px; color: var(--primary-blue); border-left: 5px solid var(--ocean-blue); padding-left: 10px; margin-bottom: 20px; text-transform: uppercase; font-weight: bold; }
         .form-group { margin-bottom: 18px; }
         .form-row { display: grid; grid-template-columns: 1fr; gap: 15px; }
         @media (min-width: 600px) { .form-row { grid-template-columns: 1fr 1fr; } }
@@ -40,7 +40,7 @@
         .radio-group { display: flex; gap: 20px; padding-top: 5px; }
         .radio-option { display: flex; align-items: center; gap: 8px; cursor: pointer; }
         
-        .btn-submit { background-color: var(--primary-blue); color: var(--white); border: none; padding: 12px 24px; font-size: 14px; font-weight: bold; text-transform: uppercase; border-radius: 4px; cursor: pointer; width: 100%; border-bottom: 2px solid var(--pcg-orange); }
+        .btn-submit { background-color: var(--ocean-blue); color: var(--white); border: none; padding: 12px 24px; font-size: 14px; font-weight: bold; text-transform: uppercase; border-radius: 4px; cursor: pointer; width: 100%; transition: background-color 0.2s; }
         .btn-submit:hover { background-color: var(--secondary-blue); }
         
         .status-badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
@@ -58,10 +58,10 @@
 
     <div class="container">
         <div class="header">
-            <img class="header-logo-img" src="https://github.com/profhawk2019/PCG/main/Philippine_Coast_Guard_(PCG).svg.png" alt="PCG Logo">
+            <img class="header-logo-img" src="PCG.jpg" alt="PCG Logo">
             <div class="header-text">
-                <h1>Philippine Coast Guard</h1>
-                <h2>Fuel Management Portal - Requesting Unit Context</h2>
+                <h1>CGWCEIS Training Institute</h1>
+                <h2>Fuel Management Portal - Personnel Request Dashboard</h2>
             </div>
         </div>
 
@@ -74,7 +74,7 @@
                     <option value="2026-07">July 2026</option>
                 </select>
             </div>
-            <div style="font-size: 12px; color: var(--gray-text);">Role: <strong>Requesting Officer</strong></div>
+            <div style="font-size: 12px; color: var(--gray-text);">Role Context: <strong>Requesting Party</strong></div>
         </div>
 
         <div class="tabs-nav">
@@ -82,34 +82,44 @@
             <button class="tab-btn" id="btn-approval" onclick="switchTab('tab-approval')">2. Approval Status</button>
         </div>
 
+        <!-- TAB 1: Request Form -->
         <div id="tab-request" class="tab-panel active">
             <div class="section-title">Fuel Requisition Form</div>
             <form id="fuelRequestForm" onsubmit="handleFormSubmit(event)">
-                <div class="form-row"><div class="form-group"><label for="officerName">Requesting Officer</label><input type="text" id="officerName" required placeholder="e.g., ENS Juan Dela Cruz PCG"></div><div class="form-group"><label for="officerRank">Rank / Designation</label><input type="text" id="officerRank" required placeholder="e.g., Ensign"></div></div>
-                <div class="form-row"><div class="form-group"><label for="unitStation">Unit / Station</label><input type="text" id="unitStation" required placeholder="e.g., CGS Manila"></div><div class="form-group"><label for="vesselVehicle">Vessel / Vehicle Plate No.</label><input type="text" id="vesselVehicle" required placeholder="e.g., PCG AB-123"></div></div>
+                <div class="form-row">
+                    <div class="form-group"><label for="officerName">Requesting Personnel / Officer</label><input type="text" id="officerName" required placeholder="e.g., ENS Juan Dela Cruz PCG"></div>
+                    <div class="form-group"><label for="officerRank">Rank / Designation</label><input type="text" id="officerRank" required placeholder="e.g., Instructor / Logistics Officer"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label for="unitStation">Branch / Section</label><input type="text" id="unitStation" required placeholder="e.g., Training Support Branch"></div>
+                    <div class="form-group"><label for="vesselVehicle">Vessel Hull No. / Vehicle Plate No.</label><input type="text" id="vesselVehicle" required placeholder="e.g., SJA-1234"></div>
+                </div>
                 <div class="form-row">
                     <div class="form-group"><label>Type of Fuel Required</label><div class="radio-group"><label class="radio-option"><input type="radio" name="fuelType" value="Gasoline" required> Gasoline</label><label class="radio-option"><input type="radio" name="fuelType" value="Diesel" required> Diesel</label></div></div>
                     <div class="form-group"><label for="quantity">Quantity Requested (Liters)</label><input type="number" id="quantity" min="0.01" step="0.01" oninput="calculateTotalCost()" required placeholder="0.00"></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group"><label for="fuelPrice">Fuel Price Per Liter (PHP)</label><input type="number" id="fuelPrice" min="0.01" step="0.01" oninput="calculateTotalCost()" required placeholder="0.00"></div>
+                    <div class="form-group"><label for="fuelPrice">Manual Fuel Price Per Liter (PHP)</label><input type="number" id="fuelPrice" min="0.01" step="0.01" oninput="calculateTotalCost()" required placeholder="0.00"></div>
                     <div class="form-group"><label for="estimatedCost">Total Calculated Cost (PHP)</label><input type="number" id="estimatedCost" placeholder="0.00" readonly style="background-color: #E2E8F0; font-weight: bold;"></div>
                 </div>
-                <div class="form-row"><div class="form-group"><label for="requestDate">Date of Request</label><input type="date" id="requestDate" required></div></div>
-                <div class="form-group"><label for="purpose">Purpose of Mission</label><textarea id="purpose" required placeholder="State mission details..."></textarea></div>
+                <div class="form-row">
+                    <div class="form-group"><label for="requestDate">Date of Request</label><input type="date" id="requestDate" required></div>
+                </div>
+                <div class="form-group"><label for="purpose">Purpose of Official Mission</label><textarea id="purpose" required placeholder="Detail usage parameters (e.g., generator operations, transport of trainees)..."></textarea></div>
                 <button type="submit" class="btn-submit">Submit Fuel Request</button>
             </form>
         </div>
 
+        <!-- TAB 2: Approval Status -->
         <div id="tab-approval" class="tab-panel">
-            <div class="section-title">Track Approval Workflow</div>
+            <div class="section-title">Track Requisition Status</div>
             <table class="portal-table" id="approvalTable">
                 <thead><tr><th>Req ID</th><th>Vessel/Vehicle</th><th>Fuel Type</th><th>Volume</th><th>Total Cost</th><th>Status</th></tr></thead>
                 <tbody></tbody>
             </table>
         </div>
 
-        <div class="footer"><p>© 2026 Philippine Coast Guard. All Rights Reserved.</p></div>
+        <div class="footer"><p>© 2026 CGWCEIS Training Institute. All Rights Reserved.</p></div>
     </div>
 
     <script>
@@ -140,7 +150,7 @@
 
             const newRequest = {
                 id: 'id-' + Date.now(),
-                reqId: `#PCG-2026-${String(db.length + 1).padStart(3, '0')}`,
+                reqId: `#TI-2026-${String(db.length + 1).padStart(3, '0')}`,
                 monthGroup: transactionMonth,
                 vesselVehicle: document.getElementById('vesselVehicle').value,
                 fuelType: document.querySelector('input[name="fuelType"]:checked').value,
@@ -148,12 +158,12 @@
                 cost: parseFloat(document.getElementById('estimatedCost').value),
                 status: 'pending',
                 date: dateVal,
-                description: `${document.querySelector('input[name="fuelType"]:checked').value} Allocation - ${document.getElementById('vesselVehicle').value}`
+                description: `${document.querySelector('input[name="fuelType"]:checked').value} Request - ${document.getElementById('vesselVehicle').value}`
             };
 
             db.push(newRequest);
             saveDB(db);
-            alert(`Success! Request ${newRequest.reqId} submitted for review.`);
+            alert(`Success! Requisition ${newRequest.reqId} dispatched to management ledger.`);
             document.getElementById('globalMonthFilter').value = transactionMonth;
             document.getElementById('fuelRequestForm').reset();
             document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
@@ -167,7 +177,7 @@
             
             const filtered = getDB().filter(r => r.monthGroup === selectedMonth);
             if(filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="empty-row-msg">No entries found for this period.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="empty-row-msg">No requisitions submitted for this accounting period.</td></tr>`;
                 return;
             }
 
