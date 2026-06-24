@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philippine Coast Guard - Fuel Management Portal</title>
+    <style>
+        :root {
+            --primary-blue: #0A2540;
+            --secondary-blue: #1E3A8A;
+            --pcg-orange: #FF5500;
+            --accent-gold: #D4AF37;
+            --light-bg: #F4F6F9;
+            --white: #FFFFFF;
+            --gray-text: #4A5568;
+            --border-color: #E2E8F0;
+            --success-green: #10B981;
+            --warning-amber: #F59E0B;
+            --danger-red: #EF4444;
+        }
+
+        * {
+            box-shadow: none;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Header Styling with Official Logo */
+        .header {
+            display: flex;
+            align-items: center;
+            border-bottom: 3px double var(--primary-blue);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .header-logo-img {
+            width: 95px;
+            height: 95px;
+            object-fit: contain;
+            margin-right: 20px;
+        }
+
+        .header-text {
+            flex-grow: 1;
+        }
+
+        .header-text h1 {
+            font-size: 24px;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-text h2 {
+            font-size: 16px;
+            color: var(--pcg-orange);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-text p {
+            font-size: 12px;
+            color: var(--gray-text);
+            margin-top: 2px;
+        }
+
+        /* Top Controls Bar */
+        .controls-bar {
+            background-color: #F8FAFC;
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .control-group label {
+            margin-bottom: 0;
+            font-weight: bold;
+            font-size: 13px;
+            color: var(--primary-blue);
+        }
+
+        .select-input {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-blue);
+            background-color: var(--white);
+        }
+
+        .role-badge {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .role-badge.user { background-color: #DBEAFE; color: #1E40AF; }
+        .role-badge.admin { background-color: #FFE6DB; color: #C43D00; }
+
+        /* Tabs Navigation */
+        .tabs-nav {
+            display: flex;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 25px;
+            gap: 5px;
+        }
+
+        .tab-btn {
+            background: #E2E8F0;
+            color: var(--gray-text);
+            border: none;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            transition: all 0.2s ease;
+            flex: 1;
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-blue);
+            color: var(--white);
+            border-bottom: 3px solid var(--pcg-orange);
+        }
+
+        /* Tab Content Panel & Access Blockers */
+        .tab-panel {
+            display: none;
+            position: relative;
+            min-height: 200px;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        .access-denied-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.96);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
+            border: 2px dashed var(--pcg-orange);
+            border-radius: 6px;
+        }
+
+        .access-denied-overlay h3 { color: var(--pcg-orange); margin-bottom: 10px; text-transform: uppercase; }
+        .access-denied-overlay p { color: var(--gray-text); font-size: 14px; }
+
+        .section-title {
+            font-size: 16px;
+            color: var(--primary-blue);
+            border-left: 5px solid var(--pcg-orange);
+            padding-left: 10px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        /* Form Controls */
+        .form-group { margin-bottom: 18px; }
+        .form-row { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        @media (min-width: 600px) { .form-row { grid-template-columns: 1fr 1fr; } }
+
+        label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--primary-blue); }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 14px; }
+
+        .radio-group { display: flex; gap: 20px; padding-top: 5px; }
+        .radio-option { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; }
+
+        .btn-submit {
+            background-color: var(--primary-blue); color: var(--white); border: none; padding: 12px 24px;
+            font-size: 14px; font-weight: bold; text-transform: uppercase; border-radius: 4px; cursor: pointer; width: 100%;
+            border-bottom: 2px solid var(--pcg-orange);
+        }
+
+        .btn-submit:hover { background-color: var(--secondary-blue); }
+
+        /* Status Badges & Tables */
+        .status-badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        .status-badge.pending { background-color: #FEF3C7; color: #D97706; }
+        .status-badge.approved { background-color: #D1FAE5; color: #059669; }
+        
+        .status-badge.admin-clickable { cursor: pointer; border: 1px solid #F59E0B; }
+        .status-badge.admin-clickable:hover { background-color: #F59E0B; color: var(--white); }
+        .status-badge.user-disabled { cursor: not-allowed; opacity: 0.7; }
+
+        .portal-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+        .portal-table th, .portal-table td { border: 1px solid var(--border-color); padding: 12px; text-align: left; }
+        .portal-table th { background-color: #F8FAFC; color: var(--primary-blue); font-weight: 600; }
+
+        /* Summary Dashboard Grid */
+        .summary-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 25px; }
+        @media (min-width: 600px) { .summary-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .card { background: #F8FAFC; border-radius: 6px; padding: 20px; border-left: 4px solid var(--secondary-blue); }
+        .card.allowance { border-left-color: var(--accent-gold); }
+        .card.remaining { border-left-color: var(--success-green); }
+        .card-label { font-size: 12px; text-transform: uppercase; color: var(--gray-text); font-weight: 600; }
+        .card-value { font-size: 24px; font-weight: bold; color: var(--primary-blue); margin-top: 5px; }
+
+        .footer { text-align: center; margin-top: 40px; font-size: 11px; color: var(--gray-text); border-top: 1px solid var(--border-color); padding-top: 15px; }
+        .empty-row-msg { text-align: center; color: var(--gray-text); font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <img class="header-logo-img" src="Philippine_Coast_Guard_(PCG).svg.png" alt="Philippine Coast Guard Official Logo">
+            <div class="header-text">
+                <h1>Philippine Coast Guard</h1>
+                <h2>Fuel Management Portal</h2>
+                <p>Command Logistics Office • Security Access Controlled System</p>
+            </div>
+        </div>
+
+        <div class="controls-bar">
+            <div class="control-group">
+                <label for="globalMonthFilter">Accounting Month:</label>
+                <select id="globalMonthFilter" class="select-input" onchange="handleFilterOrRoleUpdate()">
+                    <option value="2026-05">May 2026</option>
+                    <option value="2026-06" selected>June 2026</option>
+                    <option value="2026-07">July 2026</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="roleSelector">Active Portal Role Context:</label>
+                <select id="roleSelector" class="select-input" onchange="handleFilterOrRoleUpdate()" style="border-color: var(--pcg-orange);">
+                    <option value="user">User (Requesting Officer)</option>
+                    <option value="admin">Admin (Logistics Approver)</option>
+                </select>
+                <span id="roleLabelDisplay" class="role-badge user">User Mode</span>
+            </div>
+        </div>
+
+        <div class="tabs-nav">
+            <button class="tab-btn active" id="btn-request" onclick="switchTab('tab-request')">1. Request Fuel</button>
+            <button class="tab-btn" id="btn-approval" onclick="switchTab('tab-approval')">2. Approval Status</button>
+            <button class="tab-btn" id="btn-summary" onclick="switchTab('tab-summary')">3. Supply Summary (Admin)</button>
+        </div>
+
+        <div id="tab-request" class="tab-panel active">
+            <div id="tab1Blocker"></div>
+
+            <div class="section-title">Fuel Requisition Form</div>
+            <form id="fuelRequestForm" onsubmit="handleFormSubmit(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="officerName">Requesting Officer</label>
+                        <input type="text" id="officerName" required placeholder="e.g., ENS Juan Dela Cruz PCG">
+                    </div>
+                    <div class="form-group">
+                        <label for="officerRank">Rank / Designation</label>
+                        <input type="text" id="officerRank" required placeholder="e.g., Ensign">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="unitStation">Unit / Station</label>
+                        <input type="text" id="unitStation" required placeholder="e.g., CGS Manila">
+                    </div>
+                    <div class="form-group">
+                        <label for="vesselVehicle">Vessel / Vehicle Plate No.</label>
+                        <input type="text" id="vesselVehicle" required placeholder="e.g., PCG AB-123">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Type of Fuel Required</label>
+                        <div class="radio-group">
+                            <label class="radio-option"><input type="radio" name="fuelType" value="Gasoline" required> Gasoline</label>
+                            <label class="radio-option"><input type="radio" name="fuelType" value="Diesel" required> Diesel</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantity Requested (Liters)</label>
+                        <input type="number" id="quantity" min="0.01" step="0.01" oninput="calculateTotalCost()" required placeholder="0.00">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fuelPrice">Fuel Price Per Liter (PHP)</label>
+                        <input type="number" id="fuelPrice" min="0.01" step="0.01" oninput="calculateTotalCost()" required placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label for="estimatedCost">Total Calculated Cost (PHP)</label>
+                        <input type="number" id="estimatedCost" placeholder="0.00" readonly style="background-color: #E2E8F0; font-weight: bold;">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="requestDate">Date of Request</label>
+                        <input type="date" id="requestDate" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="purpose">Purpose of Mission</label>
+                    <textarea id="purpose" required placeholder="State operational patrol mission parameters..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Submit Fuel Request</button>
+            </form>
+        </div>
+
+        <div id="tab-approval" class="tab-panel">
+            <div class="section-title">Track Approval Workflow</div>
+            <p style="font-size: 13px; color: var(--gray-text); margin-bottom: 15px;" id="approvalTabInstruction">
+                Review workflow updates.
+            </p>
+            <table class="portal-table" id="approvalTable">
+                <thead>
+                    <tr>
+                        <th>Req ID</th>
+                        <th>Vessel/Vehicle</th>
+                        <th>Fuel Type</th>
+                        <th>Volume</th>
+                        <th>Total Cost</th>
+                        <th>Status / Action Permissions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+
+        <div id="tab-summary" class="tab-panel">
+            <div id="tab3Blocker"></div>
+
+            <div class="section-title">Monthly Allocation & Remaining Supply</div>
+            <div class="summary-grid">
+                <div class="card allowance">
+                    <div class="card-label">Monthly Budget Allowance</div>
+                    <div class="card-value">₱14,000.00</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Total Utilized (<span class="selected-month-lbl">June 2026</span>)</div>
+                    <div class="card-value" id="totalUtilizedVal" style="color: var(--secondary-blue);">₱0.00</div>
+                </div>
+                <div class="card remaining">
+                    <div class="card-label">Remaining Balance</div>
+                    <div class="card-value" id="remainingBalanceVal" style="color: var(--success-green);">₱14,000.00</div>
+                </div>
+            </div>
+
+            <div class="section-title" style="font-size: 14px; margin-top: 20px;">Approved Monthly Disbursements Log</div>
+            <table class="portal-table" id="disbursementTable">
+                <thead>
+                    <tr>
+                        <th>Disbursement Date</th>
+                        <th>Reference ID</th>
+                        <th>Description / Allocation Target</th>
+                        <th>Charged Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <p>Official Access Controlled Portal of the Philippine Coast Guard. Safeguarding maritime boundaries.</p>
+            <p>© 2026 Philippine Coast Guard. All Rights Reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
+
+        const BUDGET_LIMIT = 14000.00;
+        let requestCounter = 2;
+
+        let recordsDatabase = [
+            {
+                id: 'mock-1',
+                reqId: '#PCG-2026-001',
+                monthGroup: '2026-06',
+                vesselVehicle: 'PCG AB-123 (Vessel)',
+                fuelType: 'Diesel',
+                quantity: 100,
+                cost: 6500.00,
+                status: 'pending',
+                date: '2026-06-12',
+                description: 'Diesel Allocation (100L) - PCG AB-123 Patrol'
+            }
+        ];
+
+        function calculateTotalCost() {
+            const qty = parseFloat(document.getElementById('quantity').value) || 0;
+            const price = parseFloat(document.getElementById('fuelPrice').value) || 0;
+            document.getElementById('estimatedCost').value = (qty * price).toFixed(2);
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            document.getElementById('btn-' + tabId.split('-')[1]).classList.add('active');
+            
+            renderViews();
+        }
+
+        function handleFilterOrRoleUpdate() {
+            const currentRole = document.getElementById('roleSelector').value;
+            const badge = document.getElementById('roleLabelDisplay');
+            if(currentRole === 'admin') {
+                badge.className = "role-badge admin";
+                badge.innerText = "Admin Mode";
+            } else {
+                badge.className = "role-badge user";
+                badge.innerText = "User Mode";
+            }
+            renderViews();
+        }
+
+        function renderViews() {
+            const selectedMonth = document.getElementById('globalMonthFilter').value;
+            const selectOptions = document.getElementById('globalMonthFilter');
+            const chosenMonthText = selectOptions.options[selectOptions.selectedIndex].text;
+            const currentRole = document.getElementById('roleSelector').value;
+
+            document.querySelectorAll('.selected-month-lbl').forEach(el => el.innerText = chosenMonthText);
+
+            // Tab 1 View Restrained to Requesting Party
+            const t1Blocker = document.getElementById('tab1Blocker');
+            if (currentRole === 'admin') {
+                t1Blocker.className = "access-denied-overlay";
+                t1Blocker.innerHTML = `<h3>Form View Restrained</h3><p>Administrative accounts are authorized for audit and approval reviews only. Switch role back to User mode to write requests.</p>`;
+            } else {
+                t1Blocker.className = "";
+                t1Blocker.innerHTML = "";
+            }
+
+            // Tab 3 View Restrained to Admins
+            const t3Blocker = document.getElementById('tab3Blocker');
+            if (currentRole !== 'admin') {
+                t3Blocker.className = "access-denied-overlay";
+                t3Blocker.innerHTML = `<h3>🔒 Access Denied</h3><p>Security protocols restrict financial allowance summaries and expenditure disbursement charts to Command Logistics Administrators only.</p>`;
+            } else {
+                t3Blocker.className = "";
+                t3Blocker.innerHTML = "";
+            }
+
+            // Render Approval Workspace
+            const approvalBody = document.getElementById('approvalTable').getElementsByTagName('tbody')[0];
+            const instructionLbl = document.getElementById('approvalTabInstruction');
+            approvalBody.innerHTML = '';
+
+            if(currentRole === 'admin') {
+                instructionLbl.innerHTML = `<strong>Admin Context Active:</strong> Click on yellow <span class="status-badge pending">Pending</span> tokens to sign approvals and process charges against the accounting ledger.`;
+            } else {
+                instructionLbl.innerHTML = `<strong>User View Active:</strong> You can view and verify current pipeline statuses below. Authorization modification functions are locked out.`;
+            }
+
+            const monthRequests = recordsDatabase.filter(r => r.monthGroup === selectedMonth);
+
+            if (monthRequests.length === 0) {
+                approvalBody.innerHTML = `<tr><td colspan="6" class="empty-row-msg">No entries tracked matching ${chosenMonthText}.</td></tr>`;
+            } else {
+                monthRequests.forEach(req => {
+                    const row = approvalBody.insertRow();
+                    let actionCellMarkup = '';
+
+                    if (req.status === 'pending') {
+                        if (currentRole === 'admin') {
+                            actionCellMarkup = `<span class="status-badge pending admin-clickable" onclick="processApproval('${req.id}')" title="Click to Approve">Pending (Click Approve)</span>`;
+                        } else {
+                            actionCellMarkup = `<span class="status-badge pending user-disabled" title="Only admins can approve requests">Pending Review (Locked)</span>`;
+                        }
+                    } else {
+                        actionCellMarkup = `<span class="status-badge approved">Approved</span>`;
+                    }
+
+                    row.innerHTML = `
+                        <td><strong>${req.reqId}</strong></td>
+                        <td>${req.vesselVehicle}</td>
+                        <td>${req.fuelType}</td>
+                        <td>${req.quantity} L</td>
+                        <td>₱${req.cost.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                        <td>${actionCellMarkup}</td>
+                    `;
+                });
+            }
+
+            // Render Tab 3 Summary State
+            const approvedItems = monthRequests.filter(r => r.status === 'approved');
+            const totalUtilized = approvedItems.reduce((sum, item) => sum + item.cost, 0);
+            const remainingBalance = BUDGET_LIMIT - totalUtilized;
+
+            document.getElementById('totalUtilizedVal').innerText = `₱${totalUtilized.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            document.getElementById('remainingBalanceVal').innerText = `₱${remainingBalance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+
+            const disbursementBody = document.getElementById('disbursementTable').getElementsByTagName('tbody')[0];
+            disbursementBody.innerHTML = '';
+
+            if (approvedItems.length === 0) {
+                disbursementBody.innerHTML = `<tr><td colspan="4" class="empty-row-msg">No fuel disbursements recorded yet for ${chosenMonthText}.</td></tr>`;
+            } else {
+                approvedItems.forEach(item => {
+                    const row = disbursementBody.insertRow(0);
+                    const formattedDate = new Date(item.date).toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'});
+                    row.innerHTML = `
+                        <td>${formattedDate}</td>
+                        <td>${item.reqId}</td>
+                        <td>${item.description}</td>
+                        <td><strong>₱${item.cost.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong></td>
+                    `;
+                });
+            }
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const vesselVehicle = document.getElementById('vesselVehicle').value;
+            const fuelType = document.querySelector('input[name="fuelType"]:checked').value;
+            const quantity = parseFloat(document.getElementById('quantity').value);
+            const cost = parseFloat(document.getElementById('estimatedCost').value);
+            const dateVal = document.getElementById('requestDate').value;
+            const unitStation = document.getElementById('unitStation').value;
+
+            const transactionMonth = dateVal.substring(0, 7); 
+            const uniqueId = 'id-' + Date.now();
+            const generatedReqId = `#PCG-2026-00${requestCounter++}`;
+            const desc = `${fuelType} Request (${quantity}L) - ${vesselVehicle} [${unitStation}]`;
+
+            recordsDatabase.push({
+                id: uniqueId,
+                reqId: generatedReqId,
+                monthGroup: transactionMonth,
+                vesselVehicle: vesselVehicle,
+                fuelType: fuelType,
+                quantity: quantity,
+                cost: cost,
+                status: 'pending',
+                date: dateVal,
+                description: desc
+            });
+
+            alert(`Fuel request ${generatedReqId} submitted successfully. Track status on Tab 2.`);
+            
+            document.getElementById('globalMonthFilter').value = transactionMonth;
+            document.getElementById('fuelRequestForm').reset();
+            document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
+            
+            switchTab('tab-approval');
+        }
+
+        function processApproval(recordId) {
+            const targetRecord = recordsDatabase.find(r => r.id === recordId);
+            if (!targetRecord) return;
+
+            const currentMonthApproved = recordsDatabase.filter(r => r.monthGroup === targetRecord.monthGroup && r.status === 'approved');
+            const currentMonthUtilized = currentMonthApproved.reduce((sum, item) => sum + item.cost, 0);
+
+            if ((currentMonthUtilized + targetRecord.cost) > BUDGET_LIMIT) {
+                alert(`OVER BUDGET ERROR:\nApproving this request costing ₱${targetRecord.cost.toFixed(2)} will breach the monthly ceiling limit.\nMaximum budget left for this period: ₱${(BUDLIMIT - currentMonthUtilized).toFixed(2)}.`);
+                return;
+            }
+
+            targetRecord.status = 'approved';
+            alert(`SUCCESS:\nRequest ${targetRecord.reqId} approved.\n₱${targetRecord.cost.toFixed(2)} charged to allowance balances successfully.`);
+            renderViews();
+        }
+
+        renderViews();
+    </script>
+</body>
+</html>
