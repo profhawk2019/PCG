@@ -3,37 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PCG - Administrator Fuel Portal</title>
+    <title>CGWCEIS Training Institute - Admin Fuel Portal</title>
     <style>
         :root {
             --primary-blue: #0A2540;
-            --secondary-blue: #1E3A8A;
-            --pcg-orange: #FF5500;
-            --accent-gold: #D4AF37;
+            --ocean-blue: #0073CF;
             --light-bg: #F4F6F9;
             --white: #FFFFFF;
             --gray-text: #4A5568;
             --border-color: #E2E8F0;
             --success-green: #10B981;
+            --accent-gold: #D4AF37;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background-color: var(--light-bg); color: #333; padding: 20px; }
         .container { max-width: 1000px; margin: 0 auto; background: var(--white); padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .header { display: flex; align-items: center; border-bottom: 3px double var(--primary-blue); padding-bottom: 20px; margin-bottom: 20px; }
-        .header-logo-img { width: 95px; height: 95px; object-fit: contain; margin-right: 20px; }
-        .header-text h1 { font-size: 24px; color: var(--primary-blue); text-transform: uppercase; }
-        .header-text h2 { font-size: 16px; color: var(--pcg-orange); font-weight: 600; text-transform: uppercase; }
+        .header { display: flex; align-items: center; border-bottom: 3px double var(--ocean-blue); padding-bottom: 20px; margin-bottom: 20px; }
+        .header-logo-img { width: 105px; height: 105px; object-fit: contain; margin-right: 20px; }
+        .header-text h1 { font-size: 22px; color: var(--primary-blue); text-transform: uppercase; letter-spacing: 0.5px; }
+        .header-text h2 { font-size: 15px; color: var(--ocean-blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
         
         .controls-bar { background-color: #F8FAFC; border: 1px solid var(--border-color); padding: 15px; border-radius: 6px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .select-input { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-weight: 600; color: var(--primary-blue); }
+        .select-input { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-weight: 600; color: var(--primary-blue); background: var(--white); }
         
         .tabs-nav { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 25px; gap: 5px; }
         .tab-btn { background: #E2E8F0; color: var(--gray-text); border: none; padding: 12px 20px; font-size: 14px; font-weight: 600; cursor: pointer; border-top-left-radius: 6px; border-top-right-radius: 6px; flex: 1; }
-        .tab-btn.active { background: var(--primary-blue); color: var(--white); border-bottom: 3px solid var(--pcg-orange); }
+        .tab-btn.active { background: var(--ocean-blue); color: var(--white); border-bottom: 3px solid var(--accent-gold); }
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
         
-        .section-title { font-size: 16px; color: var(--primary-blue); border-left: 5px solid var(--pcg-orange); padding-left: 10px; margin-bottom: 20px; text-transform: uppercase; font-weight: bold; }
+        .section-title { font-size: 16px; color: var(--primary-blue); border-left: 5px solid var(--ocean-blue); padding-left: 10px; margin-bottom: 20px; text-transform: uppercase; font-weight: bold; }
         
         .status-badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
         .status-badge.pending { background-color: #FEF3C7; color: #D97706; cursor: pointer; border: 1px solid #F59E0B; }
@@ -46,7 +45,7 @@
         
         .summary-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 25px; }
         @media (min-width: 600px) { .summary-grid { grid-template-columns: repeat(3, 1fr); } }
-        .card { background: #F8FAFC; border-radius: 6px; padding: 20px; border-left: 4px solid var(--secondary-blue); }
+        .card { background: #F8FAFC; border-radius: 6px; padding: 20px; border-left: 4px solid var(--ocean-blue); }
         .card.allowance { border-left-color: var(--accent-gold); }
         .card.remaining { border-left-color: var(--success-green); }
         .card-label { font-size: 12px; text-transform: uppercase; color: var(--gray-text); font-weight: 600; }
@@ -59,65 +58,66 @@
 
     <div class="container">
         <div class="header">
-            <img class="header-logo-img" src="https://github.com/profhawk2019/PCG/main/PCG.jpg" alt="PCG Logo">
+            <img class="header-logo-img" src="PCG.jpg" alt="PCG Logo">
             <div class="header-text">
-                <h1>Philippine Coast Guard</h1>
-                <h2>Fuel Management Portal - Command Logistics Office</h2>
+                <h1>CGWCEIS Training Institute</h1>
+                <h2>Fuel Management Portal - Administrative Control Panel</h2>
             </div>
         </div>
 
         <div class="controls-bar">
             <div>
-                <label for="globalMonthFilter" style="font-weight:bold; font-size:13px; color:var(--primary-blue);">Select Accounting Period:</label>
+                <label for="globalMonthFilter" style="font-weight:bold; font-size:13px; color:var(--primary-blue);">Accounting Month Block:</label>
                 <select id="globalMonthFilter" class="select-input" onchange="renderAdminPanels()">
                     <option value="2026-05">May 2026</option>
                     <option value="2026-06" selected>June 2026</option>
                     <option value="2026-07">July 2026</option>
                 </select>
             </div>
-            <div style="font-size: 12px; color: var(--pcg-orange);">Role: <strong>Logistics Admin</strong></div>
+            <div style="font-size: 12px; color: var(--ocean-blue);">Role Authority: <strong>Logistics Administrator</strong></div>
         </div>
 
         <div class="tabs-nav">
-            <button class="tab-btn active" id="btn-approval" onclick="switchTab('tab-approval')">1. Requisition Approvals</button>
-            <button class="tab-btn" id="btn-summary" onclick="switchTab('tab-summary')">2. Supply & Budget Summary</button>
+            <button class="tab-btn active" id="btn-approval" onclick="switchTab('tab-approval')">1. Authorization Actions</button>
+            <button class="tab-btn" id="btn-summary" onclick="switchTab('tab-summary')">2. Supply & Allowance Logs</button>
         </div>
 
+        <!-- TAB 1: Authorization Actions -->
         <div id="tab-approval" class="tab-panel active">
-            <div class="section-title">Pending & Processed Requests Ledger</div>
-            <p style="font-size:13px; color:var(--gray-text); margin-bottom:15px;">Click on yellow <strong>Pending</strong> tokens to process authorization decisions and subtract from the monthly limit balance.</p>
+            <div class="section-title">Incoming Institute Requisitions Ledger</div>
+            <p style="font-size:13px; color:var(--gray-text); margin-bottom:15px;">Review operational entries below. Click a yellow <strong>Pending</strong> token to process authorization and debit the monthly institute allocation.</p>
             <table class="portal-table" id="adminApprovalTable">
-                <thead><tr><th>Req ID</th><th>Vessel/Vehicle</th><th>Fuel Type</th><th>Volume</th><th>Total Cost</th><th>Action</th></tr></thead>
+                <thead><tr><th>Req ID</th><th>Vessel/Vehicle</th><th>Fuel Type</th><th>Volume</th><th>Total Cost</th><th>Action Handlers</th></tr></thead>
                 <tbody></tbody>
             </table>
         </div>
 
+        <!-- TAB 2: Budget Summary Analytics -->
         <div id="tab-summary" class="tab-panel">
             <div class="section-title">Monthly Supply Balances Summary</div>
             <div class="summary-grid">
-                <div class="card allowance"><div class="card-label">Monthly Allowance Ceiling</div><div class="card-value">₱14,000.00</div></div>
-                <div class="card"><div class="card-label">Total Utilized (<span id="summaryMonthLabel">June 2026</span>)</div><div class="card-value" id="totalUtilizedVal" style="color: var(--secondary-blue);">₱0.00</div></div>
-                <div class="card remaining"><div class="card-label">Remaining Balance pool</div><div class="card-value" id="remainingBalanceVal" style="color: var(--success-green);">₱14,000.00</div></div>
+                <div class="card allowance"><div class="card-label">Monthly Allowance Limit</div><div class="card-value">₱14,000.00</div></div>
+                <div class="card"><div class="card-label">Total Utilized (<span id="summaryMonthLabel">June 2026</span>)</div><div class="card-value" id="totalUtilizedVal" style="color: var(--ocean-blue);">₱0.00</div></div>
+                <div class="card remaining"><div class="card-label">Remaining Balance Pool</div><div class="card-value" id="remainingBalanceVal" style="color: var(--success-green);">₱14,000.00</div></div>
             </div>
 
             <div class="section-title" style="font-size: 14px; margin-top: 20px;">Approved Monthly Disbursements Log</div>
             <table class="portal-table" id="adminDisbursementTable">
-                <thead><tr><th>Disbursement Date</th><th>Reference ID</th><th>Description / Allocation Target</th><th>Charged Amount</th></tr></thead>
+                <thead><tr><th>Disbursement Date</th><th>Reference ID</th><th>Description / Operational Allocation</th><th>Charged Amount</th></tr></thead>
                 <tbody></tbody>
             </table>
         </div>
 
-        <div class="footer"><p>© 2026 Philippine Coast Guard. All Rights Reserved.</p></div>
+        <div class="footer"><p>© 2026 CGWCEIS Training Institute. All Rights Reserved.</p></div>
     </div>
 
     <script>
         const BUDGET_LIMIT = 14000.00;
 
         function getDB() { 
-            // Initialize mock database row data item inside user space if local repository empty
             if(!localStorage.getItem('pcg_fuel_db')) {
                 localStorage.setItem('pcg_fuel_db', JSON.stringify([
-                    { id: 'mock-1', reqId: '#PCG-2026-001', monthGroup: '2026-06', vesselVehicle: 'PCG AB-123 (Vessel)', fuelType: 'Diesel', quantity: 100, cost: 6500.00, status: 'pending', date: '2026-06-12', description: 'Diesel Allocation - PCG AB-123' }
+                    { id: 'mock-1', reqId: '#TI-2026-001', monthGroup: '2026-06', vesselVehicle: 'SJA-1234 (Vehicle)', fuelType: 'Gasoline', quantity: 80, cost: 5200.00, status: 'pending', date: '2026-06-20', description: 'Gasoline Request - SJA-1234' }
                 ]));
             }
             return JSON.parse(localStorage.getItem('pcg_fuel_db')); 
@@ -140,12 +140,12 @@
             const db = getDB();
             const monthRequests = db.filter(r => r.monthGroup === selectedMonth);
 
-            // Render Approval Workspace
+            // Render Tab 1 Actions Table
             const approvalBody = document.getElementById('adminApprovalTable').getElementsByTagName('tbody')[0];
             approvalBody.innerHTML = '';
 
             if(monthRequests.length === 0) {
-                approvalBody.innerHTML = `<tr><td colspan="6" class="empty-row-msg">No submissions currently recorded for this month.</td></tr>`;
+                approvalBody.innerHTML = `<tr><td colspan="6" class="empty-row-msg">No submissions filed for this calendar block.</td></tr>`;
             } else {
                 monthRequests.forEach(req => {
                     const row = approvalBody.insertRow();
@@ -156,7 +156,7 @@
                 });
             }
 
-            // Render Summary Data Calculation Boards
+            // Render Tab 2 Allowance Status Summary
             const approvedItems = monthRequests.filter(r => r.status === 'approved');
             const totalUtilized = approvedItems.reduce((sum, i) => sum + i.cost, 0);
             const remainingBalance = BUDGET_LIMIT - totalUtilized;
@@ -168,7 +168,7 @@
             disburseBody.innerHTML = '';
 
             if(approvedItems.length === 0) {
-                disburseBody.innerHTML = `<tr><td colspan="4" class="empty-row-msg">No approved disbursements logged.</td></tr>`;
+                disburseBody.innerHTML = `<tr><td colspan="4" class="empty-row-msg">No approved disbursements tracked for this month.</td></tr>`;
             } else {
                 approvedItems.forEach(item => {
                     const row = disburseBody.insertRow(0);
@@ -186,17 +186,16 @@
             const monthApprovedTotal = db.filter(r => r.monthGroup === target.monthGroup && r.status === 'approved').reduce((sum, i) => sum + i.cost, 0);
 
             if((monthApprovedTotal + target.cost) > BUDGET_LIMIT) {
-                alert(`DENIED: Approving this ₱${target.cost.toFixed(2)} item breaches the monthly ₱14,000 allowance limit.\nHeadroom left: ₱${(BUDGET_LIMIT - monthApprovedTotal).toFixed(2)}.`);
+                alert(`OVER BUDGET REJECTION:\nApproving this ₱${target.cost.toFixed(2)} item breaches the monthly ₱14,000 allowance pool ceiling.\nAvailable balance headroom remaining: ₱${(BUDGET_LIMIT - monthApprovedTotal).toFixed(2)}.`);
                 return;
             }
 
             target.status = 'approved';
             saveDB(db);
-            alert(`Approved successfully! Request ${target.reqId} finalized.`);
+            alert(`SUCCESS:\nRequisition ${target.reqId} authorized and billed against the balance sheet.`);
             renderAdminPanels();
         }
 
-        // Initialize view baseline configuration matrices on startup pass
         renderAdminPanels();
     </script>
 </body>
